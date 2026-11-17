@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapKart | Hyperlocal Visual-Search Marketplace</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../static/images/favicon.svg">
+  
+  <!-- Design System CSS -->
+  <link rel="stylesheet" href="../../static/css/variables.css">
+  <link rel="stylesheet" href="../../static/css/base.css">
+  <link rel="stylesheet" href="../../static/css/components.css">
+  <link rel="stylesheet" href="../../static/css/customer.css">
+</head>
+<body>
+
+  <!-- Main Customer Navbar -->
+  <header class="sk-navbar">
+    <div class="container sk-navbar-inner">
+      <!-- Brand Logo -->
+      <a href="index.html" class="sk-brand" title="SnapKart Customer Marketplace">
+        <img src="../../static/images/logo.svg" alt="SnapKart Logo">
+      </a>
+
+      <!-- Hyperlocal Location Selector Pill -->
+      <div class="location-pill" onclick="SnapKart.openModal('location-modal')" title="Select delivery location">
+        <span style="color:var(--color-secondary); font-size:15px;">📍</span>
+        <div>
+          <span style="display:block; font-size:10px; color:var(--color-text-muted); line-height:1; font-weight:bold;">DELIVERING TO</span>
+          <span id="navbar-location-text" style="font-size:12px;"><span style="color:var(--color-secondary); font-weight:700;">Select Delivery Location ▾</span></span>
+        </div>
+      </div>
+
+      <!-- Live Search Bar with Visual Search Camera Shutter -->
+      <div class="visual-search-wrapper">
+        <div class="search-input-group">
+          <span style="color:var(--color-text-subtle); margin-right:6px;">🔍</span>
+          <input type="text" id="marketplace-search-input" placeholder="Search products, brands, or nearby stores...">
+          <button type="button" class="snap-btn" onclick="SnapKart.openModal('visual-search-modal'); SnapSearch.startCamera();" title="Search with Camera or Photo">
+            <span>📷</span>
+            <span>Snap It</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Nav Actions (Desktop) -->
+      <div style="display:flex; align-items:center; gap:var(--space-3);">
+        <button class="btn btn-outline btn-sm" onclick="CustomerUI.openAccountModal('orders')" title="View past orders">
+          📦 <span class="d-none d-md-inline">Orders</span>
+        </button>
+
+        <button class="btn btn-outline btn-sm" onclick="CustomerUI.openAccountModal('profile')" title="My Account">
+          👤 <span id="nav-user-name" class="d-none d-md-inline">Priya Sharma</span>
+        </button>
+        
+        <!-- Cart Trigger Button -->
+        <button class="btn btn-secondary btn-sm" onclick="SnapKart.openDrawer('cart-drawer')" style="position:relative;">
+          🛒 <span>Cart</span>
+          <span id="cart-count-badge" class="badge badge-navy" style="margin-left:4px;">1</span>
+        </button>
+
+        <!-- Exit / Switch Role -->
+        <a href="../../index.html" class="btn btn-ghost btn-sm" title="Exit to Role Selection" style="color:var(--color-text-muted);">
+          🚪 <span class="d-none d-md-inline">Exit</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Customer Portal Dedicated Navigation Bar -->
+  <nav class="customer-subnav" aria-label="Customer Navigation">
+    <div class="container customer-subnav-inner">
+      <a href="index.html" class="cust-nav-link active">🏠 Home</a>
+      <a href="#categories-section" class="cust-nav-link">🏷️ Categories</a>
+      <a href="visual-search.html" class="cust-nav-link">📷 Visual Search</a>
+      <a href="#shops-section" class="cust-nav-link">🏪 Nearby Stores</a>
+      <a href="account.html" class="cust-nav-link" onclick="CustomerUI.openAccountModal('orders'); return false;">📦 Orders</a>
+      <a href="account.html" class="cust-nav-link">👤 Account</a>
+      <button type="button" class="cust-nav-link" onclick="SnapKart.openDrawer('cart-drawer')">🛒 Cart</button>
+    </div>
+  </nav>
+
+  <!-- Location Prompt Banner (shown when location not yet chosen) -->
+  <div class="container" id="location-prompt-banner" style="display:none;">
+    <div class="location-prompt-card">
+      <div style="display:flex; align-items:center; gap:var(--space-3);">
+        <div style="font-size:1.85rem; line-height:1;">📍</div>
+        <div>
+          <strong style="color:var(--color-primary); font-size:var(--font-size-sm); display:block;">Select Your Delivery Location</strong>
+          <span class="text-xs text-muted">Choose your neighborhood to see available nearby shops and real-time inventory.</span>
+        </div>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="SnapKart.openModal('location-modal')">Choose Location →</button>
+    </div>
+  </div>
+
+  <!-- Hero Banner with Visual Search Accent -->
+  <section class="customer-hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-tagline-badge">
+          ✨ HYPERLOCAL VISUAL SEARCH MARKETPLACE
+        </div>
+        <h1 class="hero-title">
+          Snap It. Find It. <span>Get It.</span>
+        </h1>
+        <p class="hero-subtitle">
+          Snap or upload a photo of any item. We compare real-time prices across neighbourhood shops and dispatch directly from local merchants to your doorstep.
+        </p>
+
+        <!-- Quick Visual Search Trigger Pill Box -->
+        <div style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.22); border-radius: var(--radius-lg); padding: var(--space-4); backdrop-filter: blur(8px); display: inline-block; max-width: 640px; width: 100%;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 8px;">
+            <span class="text-xs font-semibold" style="color:#CBD5E1;">TRY LIVE DEMO VISUAL SCAN:</span>
+            <span class="badge badge-orange" style="font-size:10px;">Exact & Similar Separation</span>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+            <button class="btn btn-sm btn-outline" style="color:#FFFFFF; border-color:rgba(255,255,255,0.35); background:rgba(0,0,0,0.2);" onclick="SnapKart.openModal('visual-search-modal'); SnapSearch.runRecognitionAnalysis('headphones');">
+              🎧 Headphones
+            </button>
+            <button class="btn btn-sm btn-outline" style="color:#FFFFFF; border-color:rgba(255,255,255,0.35); background:rgba(0,0,0,0.2);" onclick="SnapKart.openModal('visual-search-modal'); SnapSearch.runRecognitionAnalysis('sneakers');">
+              👟 Running Shoes
+            </button>
+            <button class="btn btn-sm btn-outline" style="color:#FFFFFF; border-color:rgba(255,255,255,0.35); background:rgba(0,0,0,0.2);" onclick="SnapKart.openModal('visual-search-modal'); SnapSearch.runRecognitionAnalysis('honey');">
+              🍯 Wild Honey
+            </button>
+            <button class="btn btn-sm btn-outline" style="color:#FFFFFF; border-color:rgba(255,255,255,0.35); background:rgba(0,0,0,0.2);" onclick="SnapKart.openModal('visual-search-modal'); SnapSearch.runRecognitionAnalysis('smartwatch');">
+              ⌚ Smartwatch
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Marketplace Content -->
+  <main class="container" style="padding-top: var(--space-6); padding-bottom: var(--space-12);">
+    
+    <!-- Promotional Banners Strip -->
+    <section class="promo-banner-strip" id="promo-banner-strip"></section>
+
+    <!-- Category Filter Strip -->
+    <section style="margin-bottom: var(--space-8);">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: var(--space-2);">
+        <h3 style="font-size: var(--font-size-lg);">Product Categories</h3>
+        <span class="text-xs text-muted">Filter local store inventory</span>
+      </div>
+      <div class="category-strip" id="category-strip"></div>
+    </section>
+
+    <!-- Verified Nearby Stores Spotlight -->
+    <section id="nearby-shops-section" style="margin-bottom: var(--space-8);">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: var(--space-4);">
+        <div>
+          <h3>Verified Nearby Stores</h3>
+          <p class="text-sm text-muted">Neighbourhood merchants delivering in 10-30 minutes</p>
+        </div>
+        <a href="shop-detail.html" class="btn btn-outline btn-sm">View Store Showcase →</a>
+      </div>
+
+      <div class="grid-3" id="nearby-shops-grid"></div>
+    </section>
+
+    <!-- Hyperlocal Products Grid with Multi-Shop Compare Hints -->
+    <section>
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: var(--space-4);">
+        <div>
+          <h3>Featured Local Products</h3>
+          <p class="text-sm text-muted">Click any item to compare live store prices and stock freshness</p>
+        </div>
+        <span class="badge badge-orange">⚡ Real-time Multi-Vendor Inventory</span>
+      </div>
+
+      <div class="grid-4" id="products-grid"></div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       1. Visual Search Modal with Live Camera & Demonstration Notice
+       ========================================================================= -->
+  <div class="modal-backdrop" id="visual-search-modal">
+    <div class="modal-dialog" style="max-width: 680px;">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:22px;">📷</span>
+          <div>
+            <h3 class="modal-title" style="font-size:1.15rem;">Snap It Visual Search</h3>
+            <span class="text-xs text-muted">Snap or upload a photo to find exact local stock</span>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" data-close-modal="visual-search-modal" onclick="SnapSearch.stopCamera()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Live Camera Stream Viewfinder -->
+        <div class="camera-viewfinder-box" id="camera-viewfinder">
+          <video id="camera-video-stream" class="camera-video-feed" playsinline style="display:none;"></video>
+          <canvas id="camera-capture-canvas" style="display:none;"></canvas>
+          
+          <div class="camera-overlay-frame">
+            <div class="camera-scanner-laser"></div>
+          </div>
+
+          <!-- Fallback message / instructions -->
+          <div id="camera-fallback-msg" style="padding:1.5rem; text-align:center;">
+            <div style="font-size: 2.75rem; margin-bottom: 8px;">📸</div>
+            <h4 style="color:#FFFFFF; margin-bottom:4px;">Position product inside frame</h4>
+            <p class="text-xs" style="color:#CBD5E1; margin-bottom:12px;">Point camera or upload a saved snapshot below.</p>
+            <button class="btn btn-secondary btn-sm" onclick="SnapSearch.startCamera()">Activate Camera</button>
+          </div>
+
+          <!-- Shutter bar -->
+          <div class="camera-controls-bar">
+            <button class="shutter-btn" onclick="SnapSearch.captureSnapshot()" title="Capture Snapshot">
+              <span style="font-size:20px;">📸</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- File Upload Dropzone -->
+        <div class="snap-modal-viewfinder mt-3" id="snap-dropzone" onclick="document.getElementById('snap-file-input').click()">
+          <div class="text-xs text-muted" style="margin-bottom:6px;">Or drag & drop photo here / choose from device:</div>
+          <input type="file" id="snap-file-input" style="display:none;" accept="image/*" onchange="SnapSearch.handleImageFile(this.files[0])">
+          <button type="button" class="btn btn-outline btn-sm" onclick="event.stopPropagation(); document.getElementById('snap-file-input').click()">
+            Upload Image
+          </button>
+          <img id="uploaded-preview-img" style="display:none; max-height:80px; margin:8px auto; border-radius:var(--radius-sm);" alt="Preview">
+        </div>
+
+        <!-- Scanner Processing & Results Container -->
+        <div id="snap-scanner-view" style="margin-top: 1rem;"></div>
+        <div id="snap-results-view"></div>
+
+        <!-- Sample Demonstration Queries -->
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 8px;">
+            <span class="text-xs font-semibold text-muted">TEST SAMPLE DEMO QUERIES:</span>
+            <span class="badge badge-orange" style="font-size:10px;">Simulation Mode</span>
+          </div>
+          <div class="snap-sample-pills">
+            <button class="sample-snap-btn" onclick="SnapSearch.runRecognitionAnalysis('headphones')">🎧 Sony XM5 Headphones</button>
+            <button class="sample-snap-btn" onclick="SnapSearch.runRecognitionAnalysis('sneakers')">👟 Running Sneakers</button>
+            <button class="sample-snap-btn" onclick="SnapSearch.runRecognitionAnalysis('honey')">🍯 Organic Raw Honey</button>
+            <button class="sample-snap-btn" onclick="SnapSearch.runRecognitionAnalysis('smartwatch')">⌚ AMOLED Smartwatch</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <a href="visual-search.html" class="btn btn-outline btn-sm">Open Dedicated Visual Studio →</a>
+        <button class="btn btn-secondary btn-sm" data-close-modal="visual-search-modal" onclick="SnapSearch.stopCamera()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       2. Product Details & Multi-Shop Comparison Modal
+       ========================================================================= -->
+  <div class="modal-backdrop" id="product-detail-modal">
+    <div class="modal-dialog" style="max-width: 640px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-size:1.15rem;">Product & Multi-Shop Comparison</h3>
+        <button class="btn btn-ghost btn-sm" data-close-modal="product-detail-modal">✕</button>
+      </div>
+      <div class="modal-body" id="product-detail-modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" data-close-modal="product-detail-modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       3. Shop Details & Map Placeholder Modal
+       ========================================================================= -->
+  <div class="modal-backdrop" id="shop-detail-modal">
+    <div class="modal-dialog" style="max-width: 620px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-size:1.15rem;">Local Merchant Showcase</h3>
+        <button class="btn btn-ghost btn-sm" data-close-modal="shop-detail-modal">✕</button>
+      </div>
+      <div class="modal-body" id="shop-detail-modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" data-close-modal="shop-detail-modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       4. Location Hub Selector Modal
+       ========================================================================= -->
+  <div class="modal-backdrop" id="location-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Select Hyperlocal Hub</h3>
+        <button class="btn btn-ghost btn-sm" data-close-modal="location-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="text-sm text-muted mb-3">SnapKart connects you to neighbourhood stores within 3.0 km of your selected area.</p>
+        <div id="location-options-list"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" data-close-modal="location-modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       5. Single-Shop Constraint Conflict Modal
+       ========================================================================= -->
+  <div class="modal-backdrop" id="shop-conflict-modal">
+    <div class="modal-dialog">
+      <div class="modal-header" style="border-bottom-color:#FECACA; background:#FEF2F2;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:22px;">⚠️</span>
+          <h3 class="modal-title" style="color:var(--color-danger); font-size:1.1rem;">Single-Shop Checkout Rule</h3>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="CustomerStore.cancelShopSwitch()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:var(--font-size-sm); margin-bottom:12px;">
+          Your cart currently has items from: <strong id="conflict-current-shop" style="color:var(--color-primary);">Indiranagar TechHub</strong>.
+        </p>
+        <p class="text-sm text-muted" style="margin-bottom:12px;">
+          To guarantee 15-minute express delivery, SnapKart orders are dispatched from <strong>one shop per checkout</strong>.
+        </p>
+        <div class="alert alert-warning" style="font-size:12px; margin-bottom:0;">
+          Would you like to clear your existing cart and start a new order from <strong id="conflict-new-shop">Velocity Sports</strong>?
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" onclick="CustomerStore.cancelShopSwitch()">Keep Current Cart</button>
+        <button class="btn btn-danger btn-sm" onclick="CustomerStore.confirmShopSwitch()">Clear & Switch Store</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       6. Checkout Modal (Delivery vs Pickup, Address & Order Placement)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="checkout-modal">
+    <div class="modal-dialog" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-size:1.15rem;">Express Checkout</h3>
+        <button class="btn btn-ghost btn-sm" data-close-modal="checkout-modal">✕</button>
+      </div>
+      <div class="modal-body" id="checkout-modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" data-close-modal="checkout-modal">Cancel</button>
+        <button class="btn btn-secondary btn-sm" onclick="CustomerUI.confirmOrderPlacement()">
+          ⚡ Confirm & Place Order
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       7. Add Address Modal
+       ========================================================================= -->
+  <div class="modal-backdrop" id="add-address-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-size:1.15rem;">Add New Address</h3>
+        <button class="btn btn-ghost btn-sm" data-close-modal="add-address-modal">✕</button>
+      </div>
+      <form onsubmit="event.preventDefault(); CustomerStore.addAddress({ label: document.getElementById('new-addr-label').value, line1: document.getElementById('new-addr-line1').value, city: document.getElementById('new-addr-city').value, pincode: document.getElementById('new-addr-pincode').value }); SnapKart.closeModal('add-address-modal');">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Address Type</label>
+            <select class="form-select" id="new-addr-label">
+              <option value="Home">Home 🏠</option>
+              <option value="Office">Office 💼</option>
+              <option value="Other">Other 📍</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">House / Flat / Street Details</label>
+            <input type="text" class="form-control" id="new-addr-line1" required placeholder="e.g. Apt 4B, Silver Oak, 12th Main">
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Area & City</label>
+              <input type="text" class="form-control" id="new-addr-city" required value="Indiranagar, Bangalore">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Postal Code</label>
+              <input type="text" class="form-control" id="new-addr-pincode" required value="560038">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline btn-sm" data-close-modal="add-address-modal">Cancel</button>
+          <button type="submit" class="btn btn-secondary btn-sm">Save Address</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       8. Customer Account & Order History Modal
+       ========================================================================= -->
+  <div class="modal-backdrop" id="account-modal">
+    <div class="modal-dialog" style="max-width: 620px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-size:1.15rem;">Customer Account Portal</h3>
+        <button class="btn btn-ghost btn-sm" data-close-modal="account-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="account-tabs">
+          <button class="account-tab-btn active" data-tab="orders" onclick="CustomerUI.switchAccountTab('orders')">📦 Past & Active Orders</button>
+          <button class="account-tab-btn" data-tab="addresses" onclick="CustomerUI.switchAccountTab('addresses')">📍 Saved Addresses</button>
+          <button class="account-tab-btn" data-tab="profile" onclick="CustomerUI.switchAccountTab('profile')">👤 Profile Details</button>
+        </div>
+        <div id="account-tab-content"></div>
+      </div>
+      <div class="modal-footer">
+        <a href="account.html" class="btn btn-outline btn-sm">Open Dedicated Account Page →</a>
+        <button class="btn btn-secondary btn-sm" data-close-modal="account-modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       9. Live Order Tracker Modal (Interactive Timeline)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="order-tracker-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-size:1.15rem;">Live Order Tracking</h3>
+        <button class="btn btn-ghost btn-sm" data-close-modal="order-tracker-modal">✕</button>
+      </div>
+      <div class="modal-body" id="order-tracker-modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" onclick="SnapKart.showToast('Calling local support (+91 80 4000 8899)...', 'info')">Need Help?</button>
+        <button class="btn btn-secondary btn-sm" data-close-modal="order-tracker-modal">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       10. Cart Slide-Over Drawer
+       ========================================================================= -->
+  <div class="drawer-backdrop" id="cart-drawer">
+    <div class="drawer">
+      <div class="drawer-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:20px;">🛒</span>
+          <h3 style="font-size:1.15rem; color:var(--color-primary);">Hyperlocal Cart</h3>
+        </div>
+        <button class="btn btn-ghost btn-sm" data-close-drawer="cart-drawer">✕</button>
+      </div>
+
+      <div class="drawer-body" id="drawer-cart-items"></div>
+
+      <div class="drawer-footer">
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:var(--font-size-xs); color:var(--color-text-muted);">
+          <span>Items Subtotal:</span>
+          <span id="cart-subtotal" style="font-weight:700; color:var(--color-text);">$0.00</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:var(--font-size-xs); color:var(--color-text-muted);">
+          <span>Fulfillment Fee:</span>
+          <span id="cart-delivery-fee" style="font-weight:700; color:var(--color-success);">$0.00</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:var(--font-size-xs); color:var(--color-text-muted);">
+          <span>Local Taxes (5%):</span>
+          <span id="cart-tax" style="font-weight:700; color:var(--color-text);">$0.00</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:var(--font-size-lg); font-weight:800; color:var(--color-primary); border-top:1px dashed var(--color-border); padding-top:8px;">
+          <span>Total:</span>
+          <span id="cart-total">$0.00</span>
+        </div>
+
+        <button class="btn btn-secondary" style="width:100%;" onclick="CustomerUI.openCheckoutModal()">
+          ⚡ Proceed to Checkout →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       11. Mobile Bottom Sticky Navigation Bar
+       ========================================================================= -->
+  <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
+    <a href="index.html" class="bottom-nav-item active">
+      <span class="bottom-nav-icon">🏠</span>
+      <span class="bottom-nav-label">Home</span>
+    </a>
+    <button class="bottom-nav-item" onclick="SnapKart.openModal('location-modal')">
+      <span class="bottom-nav-icon">📍</span>
+      <span class="bottom-nav-label">Hub</span>
+    </button>
+    <button class="bottom-nav-item" onclick="SnapKart.openModal('visual-search-modal'); SnapSearch.startCamera();">
+      <div class="bottom-nav-snap-highlight">
+        <span style="font-size:20px; line-height:1;">📷</span>
+      </div>
+      <span class="bottom-nav-label" style="font-weight:800; color:var(--color-secondary);">Snap</span>
+    </button>
+    <button class="bottom-nav-item" onclick="CustomerUI.openAccountModal('orders')">
+      <span class="bottom-nav-icon">📦</span>
+      <span class="bottom-nav-label">Orders</span>
+    </button>
+    <button class="bottom-nav-item" onclick="SnapKart.openDrawer('cart-drawer')">
+      <span class="bottom-nav-icon">🛒</span>
+      <span class="bottom-nav-label">Cart</span>
+      <span id="mobile-cart-badge" class="badge badge-navy" style="position:absolute; top:2px; right:14px; font-size:9px; padding:2px 5px;">1</span>
+    </button>
+  </nav>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="../../static/js/app.js"></script>
+  <script src="../../static/js/sample-data.js"></script>
+  <script src="../../static/js/customer-store.js"></script>
+  <script src="../../static/js/visual-search.js"></script>
+  <script src="../../static/js/customer.js"></script>
+</body>
+</html>

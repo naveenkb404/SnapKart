@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapKart | Visual Search Studio ("Snap It. Find It. Get It.")</title>
+  
+  <link rel="icon" type="image/svg+xml" href="../../static/images/favicon.svg">
+  <link rel="stylesheet" href="../../static/css/variables.css">
+  <link rel="stylesheet" href="../../static/css/base.css">
+  <link rel="stylesheet" href="../../static/css/components.css">
+  <link rel="stylesheet" href="../../static/css/customer.css">
+</head>
+<body style="background:var(--color-bg);">
+
+  <!-- Header -->
+  <header class="sk-navbar">
+    <div class="container sk-navbar-inner">
+      <a href="index.html" class="sk-brand" title="SnapKart Customer Marketplace">
+        <img src="../../static/images/logo.svg" alt="SnapKart Logo">
+      </a>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="index.html" class="btn btn-outline btn-sm">← Back to Marketplace</a>
+        <a href="account.html" class="btn btn-ghost btn-sm">👤 Account</a>
+        <button class="btn btn-secondary btn-sm" onclick="SnapKart.openDrawer('cart-drawer')">
+          🛒 Cart <span id="cart-count-badge" class="badge badge-navy" style="margin-left:4px;">1</span>
+        </button>
+        <a href="../../index.html" class="btn btn-ghost btn-sm" title="Exit to Role Selection" style="color:var(--color-text-muted);">
+          🚪 Exit
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Studio Container -->
+  <main class="container" style="max-width: 860px; padding-top: var(--space-8); padding-bottom: var(--space-12);">
+    
+    <div style="text-align: center; margin-bottom: var(--space-6);">
+      <span class="badge badge-orange" style="margin-bottom: 6px;">AI COMPUTER VISION STUDIO</span>
+      <h2>Snap It. Find It. Get It.</h2>
+      <p class="text-muted">Take a photo or upload an image to identify products and discover real-time neighbourhood stock.</p>
+    </div>
+
+    <!-- Demonstration Disclaimer Notice -->
+    <div class="demo-data-disclaimer mb-4">
+      <span>⚠️</span>
+      <span><strong>DEMONSTRATION SYSTEM:</strong> Computer vision and neural distance queries are simulated using sample local vendor datasets.</span>
+    </div>
+
+    <!-- Camera / Viewfinder Box -->
+    <div class="card p-5 mb-6" style="border: 2px solid var(--color-secondary);">
+      <div class="camera-viewfinder-box" id="camera-viewfinder" style="min-height:340px;">
+        <video id="camera-video-stream" class="camera-video-feed" playsinline style="display:none;"></video>
+        <canvas id="camera-capture-canvas" style="display:none;"></canvas>
+        
+        <div class="camera-overlay-frame">
+          <div class="camera-scanner-laser"></div>
+        </div>
+
+        <div id="camera-fallback-msg" style="padding:2rem; text-align:center;">
+          <div style="font-size:3rem; margin-bottom:8px;">📷</div>
+          <h3 style="color:#FFFFFF; margin-bottom:4px;">Position Object in Viewfinder</h3>
+          <p class="text-xs" style="color:#CBD5E1; margin-bottom:16px;">Point camera or select sample item queries below.</p>
+          <button class="btn btn-secondary btn-sm" onclick="SnapSearch.startCamera()">Turn On Camera Feed</button>
+        </div>
+
+        <div class="camera-controls-bar">
+          <button class="shutter-btn" onclick="SnapSearch.captureSnapshot()" title="Capture Snapshot">
+            <span style="font-size:22px;">📸</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- File Upload Dropzone -->
+      <div class="snap-modal-viewfinder mt-4" id="snap-dropzone" onclick="document.getElementById('snap-file-input').click()">
+        <span style="font-size:1.8rem; display:block; margin-bottom:4px;">📁</span>
+        <strong style="color:var(--color-primary); font-size:14px;">Drop Product Photo Here, or Browse Files</strong>
+        <p class="text-xs text-muted" style="margin-top:2px; margin-bottom:8px;">Supports JPG, PNG, WEBP (Max 10MB)</p>
+        <input type="file" id="snap-file-input" style="display:none;" accept="image/*" onchange="SnapSearch.handleImageFile(this.files[0])">
+        <button type="button" class="btn btn-outline btn-sm">Choose Image</button>
+        <img id="uploaded-preview-img" style="display:none; max-height:100px; margin:10px auto; border-radius:var(--radius-sm);" alt="Preview">
+      </div>
+
+      <!-- Demonstration Query Test Chips -->
+      <div style="margin-top:var(--space-4); border-top:1px solid var(--color-border); padding-top:var(--space-4);">
+        <span class="text-xs font-semibold text-muted" style="display:block; margin-bottom:8px;">ONE-CLICK DEMO SAMPLES:</span>
+        <div class="snap-sample-pills">
+          <button class="sample-snap-btn" onclick="SnapSearch.runRecognitionAnalysis('headphones')">🎧 Sony XM5 Headphones</button>
+          <button class="sample-snap-btn" onclick="SnapSearch.runRecognitionAnalysis('sneakers')">👟 Running Sneakers</button>
+          <button class="sample-snap-btn" onclick="SnapSearch.runRecognitionAnalysis('honey')">🍯 Organic Raw Honey</button>
+          <button class="sample-snap-btn" onclick="SnapSearch.runRecognitionAnalysis('smartwatch')">⌚ AMOLED Smartwatch</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scanner Processing & Results Container -->
+    <div id="snap-scanner-view"></div>
+    <div id="snap-results-view"></div>
+
+  </main>
+
+  <!-- Cart Slide-Over Drawer -->
+  <div class="drawer-backdrop" id="cart-drawer">
+    <div class="drawer">
+      <div class="drawer-header">
+        <h3 style="font-size:1.15rem; color:var(--color-primary);">Hyperlocal Cart</h3>
+        <button class="btn btn-ghost btn-sm" data-close-drawer="cart-drawer">✕</button>
+      </div>
+      <div class="drawer-body" id="drawer-cart-items"></div>
+      <div class="drawer-footer">
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:800; font-size:var(--font-size-lg); color:var(--color-primary);">
+          <span>Total:</span>
+          <span id="cart-total">$0.00</span>
+        </div>
+        <a href="checkout.html" class="btn btn-secondary" style="width:100%; text-align:center;">
+          Proceed to Checkout →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="../../static/js/app.js"></script>
+  <script src="../../static/js/sample-data.js"></script>
+  <script src="../../static/js/customer-store.js"></script>
+  <script src="../../static/js/visual-search.js"></script>
+  <script src="../../static/js/customer.js"></script>
+  <script>
+    // Auto-trigger sample analysis on page load for instant demo
+    document.addEventListener('DOMContentLoaded', () => {
+      SnapSearch.runRecognitionAnalysis('headphones');
+    });
+  </script>
+</body>
+</html>

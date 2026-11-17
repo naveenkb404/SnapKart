@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapKart | Hyperlocal Visual-Search Multi-Vendor Marketplace</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg">
+  
+  <!-- Design System CSS -->
+  <link rel="stylesheet" href="static/css/variables.css">
+  <link rel="stylesheet" href="static/css/base.css">
+  <link rel="stylesheet" href="static/css/components.css">
+</head>
+<body style="background: var(--color-bg); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Main Brand Navbar -->
+  <header class="sk-navbar" style="border-bottom: 1px solid var(--color-border); background: var(--color-surface);">
+    <div class="container sk-navbar-inner">
+      <a href="index.html" class="sk-brand" style="text-decoration: none;">
+        <img src="static/images/logo.svg" alt="SnapKart Logo" style="height: 38px;">
+      </a>
+      <div style="display: flex; align-items: center; gap: var(--space-4);">
+        <span class="badge badge-orange" style="font-size: 11px; font-weight: 700; letter-spacing: 0.05em;">
+          "Snap It. Find It. Get It."
+        </span>
+        <a href="#roles" class="btn btn-secondary btn-sm d-none d-md-inline-flex">
+          Select Your Portal ↓
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Welcome Section -->
+  <header style="background: linear-gradient(135deg, var(--color-primary) 0%, #1A2E56 100%); color: #FFFFFF; padding: var(--space-12) 0 var(--space-10) 0; text-align: center; border-bottom: 4px solid var(--color-secondary); position: relative; overflow: hidden;">
+    <div class="container" style="max-width: 860px; position: relative; z-index: 2;">
+      <div style="display: inline-block; margin-bottom: var(--space-3);">
+        <span class="badge badge-orange" style="background: rgba(255, 140, 66, 0.2); border: 1px solid var(--color-secondary); color: #FFFFFF; font-size: 12px; padding: 0.35rem 0.85rem;">
+          HYPERLOCAL MULTI-VENDOR MARKETPLACE
+        </span>
+      </div>
+      <h1 style="color: #FFFFFF; font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 800; line-height: 1.15; margin-bottom: var(--space-3);">
+        Snap It. Find It. <span style="color: var(--color-secondary);">Get It.</span>
+      </h1>
+      <p class="lead" style="color: #CBD5E1; font-size: clamp(1rem, 2.5vw, 1.25rem); max-width: 680px; margin: 0 auto var(--space-6) auto; line-height: 1.6;">
+        Welcome to SnapKart. Discover products using visual search, compare prices across neighborhood shops, and connect with rapid local delivery.
+      </p>
+      <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.1); padding: 0.4rem 1rem; border-radius: var(--radius-full); font-size: 13px; color: #E2E8F0; backdrop-filter: blur(8px);">
+        <span>👇</span>
+        <span>Please choose your role below to enter your dedicated portal:</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Three Prominent Role-Selection Cards -->
+  <main class="container" id="roles" style="padding-top: var(--space-10); padding-bottom: var(--space-12); flex: 1;">
+    
+    <div style="text-align: center; margin-bottom: var(--space-8);">
+      <h2 style="font-size: var(--font-size-2xl); color: var(--color-primary); margin-bottom: var(--space-2);">
+        Select Your Experience
+      </h2>
+      <p class="text-muted" style="max-width: 540px; margin: 0 auto;">
+        SnapKart provides dedicated, purpose-built interfaces tailored for each marketplace participant.
+      </p>
+    </div>
+
+    <div class="grid-3 mb-10" style="gap: var(--space-6);">
+      
+      <!-- Card 1: Customer -->
+      <div class="card p-6" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 5px solid var(--color-secondary); box-shadow: var(--shadow-md); transition: transform var(--transition-fast), box-shadow var(--transition-fast);">
+        <div>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4);">
+            <div style="width: 52px; height: 52px; border-radius: var(--radius-lg); background: rgba(255, 140, 66, 0.15); display: flex; align-items: center; justify-content: center; font-size: 26px;">
+              🛒
+            </div>
+            <span class="badge badge-orange">SHOPPING</span>
+          </div>
+          
+          <h3 style="font-size: var(--font-size-xl); color: var(--color-primary); margin-bottom: var(--space-2);">
+            Customer
+          </h3>
+          
+          <p class="text-sm text-muted" style="margin-bottom: var(--space-4); line-height: 1.6;">
+            Discover products, search using images, compare nearby shops and place orders.
+          </p>
+
+          <div style="background: var(--color-surface-alt); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-5);">
+            <ul class="text-xs text-muted" style="padding-left: 1rem; margin-bottom: 0; line-height: 1.8;">
+              <li><strong>Visual Search:</strong> Snap photos to find exact & similar items</li>
+              <li><strong>Local Comparison:</strong> Real-time shop prices & stock status</li>
+              <li><strong>Express Checkout:</strong> Single-vendor cart & live order tracking</li>
+            </ul>
+          </div>
+        </div>
+
+        <a href="templates/customer/index.html" class="btn btn-secondary btn-lg" style="width: 100%; text-align: center; justify-content: center; font-weight: 700;">
+          Continue as Customer →
+        </a>
+      </div>
+
+      <!-- Card 2: Shop Owner -->
+      <div class="card p-6" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 5px solid var(--color-primary); box-shadow: var(--shadow-md); transition: transform var(--transition-fast), box-shadow var(--transition-fast);">
+        <div>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4);">
+            <div style="width: 52px; height: 52px; border-radius: var(--radius-lg); background: rgba(20, 33, 61, 0.1); display: flex; align-items: center; justify-content: center; font-size: 26px;">
+              🏪
+            </div>
+            <span class="badge badge-navy">MERCHANT</span>
+          </div>
+          
+          <h3 style="font-size: var(--font-size-xl); color: var(--color-primary); margin-bottom: var(--space-2);">
+            Shop Owner
+          </h3>
+          
+          <p class="text-sm text-muted" style="margin-bottom: var(--space-4); line-height: 1.6;">
+            Register a shop, manage products, update inventory and receive customer orders.
+          </p>
+
+          <div style="background: var(--color-surface-alt); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-5);">
+            <ul class="text-xs text-muted" style="padding-left: 1rem; margin-bottom: 0; line-height: 1.8;">
+              <li><strong>Order Pipeline:</strong> Live incoming orders & prep status controls</li>
+              <li><strong>Inventory Steppers:</strong> Quick stock updates & low-stock alerts</li>
+              <li><strong>Financial History:</strong> Sales breakdown, take-rate & settlements</li>
+            </ul>
+          </div>
+        </div>
+
+        <a href="templates/dealer/index.html" class="btn btn-primary btn-lg" style="width: 100%; text-align: center; justify-content: center; font-weight: 700;">
+          Continue as Shop Owner →
+        </a>
+      </div>
+
+      <!-- Card 3: Delivery Partner -->
+      <div class="card p-6" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 5px solid #059669; box-shadow: var(--shadow-md); transition: transform var(--transition-fast), box-shadow var(--transition-fast);">
+        <div>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4);">
+            <div style="width: 52px; height: 52px; border-radius: var(--radius-lg); background: rgba(5, 150, 105, 0.12); display: flex; align-items: center; justify-content: center; font-size: 26px;">
+              🛵
+            </div>
+            <span class="badge badge-success">FLEET</span>
+          </div>
+          
+          <h3 style="font-size: var(--font-size-xl); color: var(--color-primary); margin-bottom: var(--space-2);">
+            Delivery Partner
+          </h3>
+          
+          <p class="text-sm text-muted" style="margin-bottom: var(--space-4); line-height: 1.6;">
+            Register as a delivery partner, manage availability and receive delivery assignments.
+          </p>
+
+          <div style="background: var(--color-surface-alt); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-5);">
+            <ul class="text-xs text-muted" style="padding-left: 1rem; margin-bottom: 0; line-height: 1.8;">
+              <li><strong>Duty Dispatch:</strong> Online/offline shift toggle & broadcast alerts</li>
+              <li><strong>Two-Step OTP:</strong> Merchant pickup OTP & customer handover OTP</li>
+              <li><strong>Earnings & Wallet:</strong> Shift earnings, trip tips & instant payout</li>
+            </ul>
+          </div>
+        </div>
+
+        <a href="templates/delivery/index.html" class="btn btn-outline btn-lg" style="width: 100%; text-align: center; justify-content: center; font-weight: 700; border-color: var(--color-primary); color: var(--color-primary);">
+          Continue as Delivery Partner →
+        </a>
+      </div>
+
+    </div>
+
+    <!-- How SnapKart Works Banner -->
+    <section style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-8); box-shadow: var(--shadow-sm);">
+      <div style="text-align: center; margin-bottom: var(--space-6);">
+        <span class="badge badge-navy mb-2">HYPERLOCAL VISUAL COMMERCE</span>
+        <h3 style="font-size: var(--font-size-lg); color: var(--color-primary); margin-bottom: 4px;">
+          How SnapKart Works
+        </h3>
+        <p class="text-xs text-muted" style="margin-bottom: 0;">Three simple steps powered by image recognition and neighbourhood dispatch</p>
+      </div>
+
+      <div class="grid-3" style="gap: var(--space-5);">
+        <div style="text-align: center; padding: var(--space-3);">
+          <div style="font-size: 2.2rem; margin-bottom: var(--space-2);">📷</div>
+          <h4 style="font-size: var(--font-size-base); color: var(--color-primary); margin-bottom: var(--space-1);">1. Snap It</h4>
+          <p class="text-xs text-muted" style="margin-bottom: 0;">Take or upload a photo of what you want to buy using our visual camera interface.</p>
+        </div>
+        <div style="text-align: center; padding: var(--space-3);">
+          <div style="font-size: 2.2rem; margin-bottom: var(--space-2);">🔍</div>
+          <h4 style="font-size: var(--font-size-base); color: var(--color-primary); margin-bottom: var(--space-1);">2. Find It</h4>
+          <p class="text-xs text-muted" style="margin-bottom: 0;">Compare real-time prices and verified stock across neighbourhood shops within 3 km.</p>
+        </div>
+        <div style="text-align: center; padding: var(--space-3);">
+          <div style="font-size: 2.2rem; margin-bottom: var(--space-2);">🛵</div>
+          <h4 style="font-size: var(--font-size-base); color: var(--color-primary); margin-bottom: var(--space-1);">3. Get It</h4>
+          <p class="text-xs text-muted" style="margin-bottom: 0;">Fulfill directly from local merchants with fast doorstep delivery or in-store pickup.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Clean Footer with Discrete Staff Access -->
+  <footer style="background: var(--color-primary); color: #94A3B8; padding: var(--space-6) 0; border-top: 1px solid rgba(255,255,255,0.08); margin-top: auto;">
+    <div class="container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3);">
+      <div style="display: flex; align-items: center; gap: var(--space-3);">
+        <img src="static/images/logo.svg" alt="SnapKart" style="height: 28px;">
+        <span class="text-xs" style="color: #CBD5E1;">"Snap It. Find It. Get It." • Hyperlocal Multi-Vendor Platform</span>
+      </div>
+      
+      <div style="display: flex; align-items: center; gap: var(--space-4);">
+        <span class="text-xs" style="color: #64748B;">HTML5 • CSS3 • Vanilla JS</span>
+        <!-- Discrete Admin Login Route (Not in public primary navigation) -->
+        <a href="templates/admin/login.html" class="text-xs" style="color: #64748B; text-decoration: none; border-left: 1px solid rgba(255,255,255,0.15); padding-left: var(--space-3);" title="Staff & Operations Login">
+          🔒 Staff Access
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="static/js/app.js"></script>
+</body>
+</html>

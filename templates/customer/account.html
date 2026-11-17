@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapKart | Customer Account & Order Tracking</title>
+  
+  <link rel="icon" type="image/svg+xml" href="../../static/images/favicon.svg">
+  <link rel="stylesheet" href="../../static/css/variables.css">
+  <link rel="stylesheet" href="../../static/css/base.css">
+  <link rel="stylesheet" href="../../static/css/components.css">
+  <link rel="stylesheet" href="../../static/css/customer.css">
+</head>
+<body style="background:var(--color-bg);">
+
+  <header class="sk-navbar">
+    <div class="container sk-navbar-inner">
+      <a href="index.html" class="sk-brand" title="SnapKart Customer Marketplace">
+        <img src="../../static/images/logo.svg" alt="SnapKart Logo">
+      </a>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="index.html" class="btn btn-outline btn-sm">← Back to Marketplace</a>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="width:32px; height:32px; border-radius:50%; background:var(--color-primary); color:white; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:12px;">
+            PS
+          </div>
+          <span style="font-size:13px; font-weight:700; color:var(--color-primary);" id="account-header-name">Priya Sharma</span>
+        </div>
+        <a href="../../index.html" class="btn btn-ghost btn-sm" title="Exit to Role Selection" style="color:var(--color-text-muted);">
+          🚪 Exit
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="max-width: 920px; padding-top: var(--space-8); padding-bottom: var(--space-12);">
+    
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--space-6); flex-wrap:wrap; gap:12px;">
+      <div>
+        <h2>Customer Account & Orders</h2>
+        <p class="text-muted">Manage your hyperlocal orders, delivery addresses, and profile settings.</p>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="toggleAuthSimulation()">
+        <span id="auth-toggle-label">Sign Out (Demo Mode)</span>
+      </button>
+    </div>
+
+    <!-- Auth Forms (Shown when logged out) -->
+    <div id="auth-container-box" style="display:none;" class="card p-6 mb-8">
+      <div style="max-width:440px; margin:0 auto;">
+        <div class="account-tabs mb-4" style="justify-content:center;">
+          <button class="account-tab-btn active" id="tab-login" onclick="showAuthTab('login')">Sign In</button>
+          <button class="account-tab-btn" id="tab-register" onclick="showAuthTab('register')">Create Account</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" onsubmit="event.preventDefault(); CustomerStore.setAuth(true, { name: 'Priya Sharma', email: document.getElementById('login-email').value }); showMainAccountUI();">
+          <div class="form-group">
+            <label class="form-label">Email or Phone</label>
+            <input type="text" class="form-control" id="login-email" value="priya.sharma@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" id="login-password" value="••••••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-secondary" style="width:100%; margin-top:8px;">Sign In to SnapKart</button>
+          <p class="text-xs text-muted" style="text-align:center; margin-top:12px;">Demo login is pre-filled. Press button to sign in.</p>
+        </form>
+
+        <!-- Register Form -->
+        <form id="register-form" style="display:none;" onsubmit="event.preventDefault(); CustomerStore.setAuth(true, { name: document.getElementById('reg-name').value, email: document.getElementById('reg-email').value }); showMainAccountUI();">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="reg-name" required placeholder="John Doe">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" id="reg-email" required placeholder="john@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="reg-phone" required placeholder="+91 98000 00000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Create Password</label>
+            <input type="password" class="form-control" required placeholder="At least 6 characters">
+          </div>
+          <button type="submit" class="btn btn-secondary" style="width:100%; margin-top:8px;">Register & Start Shopping</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Main Account Management UI -->
+    <div id="main-account-ui">
+      <!-- Navigation Tabs -->
+      <div class="account-tabs">
+        <button class="account-tab-btn active" id="tab-btn-orders" onclick="switchPageTab('orders')">📦 Order History & Tracking</button>
+        <button class="account-tab-btn" id="tab-btn-addresses" onclick="switchPageTab('addresses')">📍 Saved Addresses</button>
+        <button class="account-tab-btn" id="tab-btn-profile" onclick="switchPageTab('profile')">👤 Personal Profile</button>
+      </div>
+
+      <!-- Tab 1: Orders -->
+      <div id="pane-orders">
+        <div id="page-orders-list"></div>
+      </div>
+
+      <!-- Tab 2: Addresses -->
+      <div id="pane-addresses" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-4);">
+          <h4 style="font-size:var(--font-size-base); color:var(--color-primary); margin-bottom:0;">Saved Delivery Locations</h4>
+          <button class="btn btn-secondary btn-sm" onclick="SnapKart.openModal('add-address-modal')">+ Add Address</button>
+        </div>
+        <div id="page-addresses-list"></div>
+      </div>
+
+      <!-- Tab 3: Profile -->
+      <div id="pane-profile" style="display:none;">
+        <div class="card p-6">
+          <h4 style="font-size:var(--font-size-base); color:var(--color-primary); margin-bottom:var(--space-4);">Personal Profile</h4>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="acc-name" value="Priya Sharma">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" id="acc-email" value="priya.sharma@example.com">
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Phone</label>
+              <input type="text" class="form-control" id="acc-phone" value="+91 98450 12345">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Default Hub</label>
+              <input type="text" class="form-control" value="Indiranagar 100ft Rd" readonly style="background:#F1F5F9;">
+            </div>
+          </div>
+          <div style="display:flex; justify-content:flex-end; margin-top:var(--space-3);">
+            <button class="btn btn-secondary btn-sm" onclick="SnapKart.showToast('Profile updated successfully!', 'success')">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Add Address Modal -->
+  <div class="modal-backdrop" id="add-address-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-size:1.15rem;">Add New Address</h3>
+        <button class="btn btn-ghost btn-sm" data-close-modal="add-address-modal">✕</button>
+      </div>
+      <form onsubmit="event.preventDefault(); CustomerStore.addAddress({ label: document.getElementById('new-addr-label').value, line1: document.getElementById('new-addr-line1').value, city: document.getElementById('new-addr-city').value, pincode: document.getElementById('new-addr-pincode').value }); SnapKart.closeModal('add-address-modal'); renderAddressesPage();">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Address Type</label>
+            <select class="form-select" id="new-addr-label">
+              <option value="Home">Home 🏠</option>
+              <option value="Office">Office 💼</option>
+              <option value="Other">Other 📍</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">House / Flat / Street Details</label>
+            <input type="text" class="form-control" id="new-addr-line1" required placeholder="e.g. Apt 4B, Silver Oak, 12th Main">
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Area & City</label>
+              <input type="text" class="form-control" id="new-addr-city" required value="Indiranagar, Bangalore">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Postal Code</label>
+              <input type="text" class="form-control" id="new-addr-pincode" required value="560038">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline btn-sm" data-close-modal="add-address-modal">Cancel</button>
+          <button type="submit" class="btn btn-secondary btn-sm">Save Address</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Live Order Tracker Modal -->
+  <div class="modal-backdrop" id="order-tracker-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-size:1.15rem;">Live Order Tracking</h3>
+        <button class="btn btn-ghost btn-sm" data-close-modal="order-tracker-modal">✕</button>
+      </div>
+      <div class="modal-body" id="order-tracker-modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" onclick="SnapKart.showToast('Calling local support (+91 80 4000 8899)...', 'info')">Need Help?</button>
+        <button class="btn btn-secondary btn-sm" data-close-modal="order-tracker-modal">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="../../static/js/app.js"></script>
+  <script src="../../static/js/sample-data.js"></script>
+  <script src="../../static/js/customer-store.js"></script>
+  <script src="../../static/js/customer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderOrdersPage();
+      renderAddressesPage();
+
+      // Check URL query parameters for track=ORD-XXXX
+      const urlParams = new URLSearchParams(window.location.search);
+      const trackId = urlParams.get('track');
+      if (trackId) {
+        CustomerUI.openOrderTracker(trackId);
+      }
+    });
+
+    function switchPageTab(tabKey) {
+      document.getElementById('tab-btn-orders').classList.toggle('active', tabKey === 'orders');
+      document.getElementById('tab-btn-addresses').classList.toggle('active', tabKey === 'addresses');
+      document.getElementById('tab-btn-profile').classList.toggle('active', tabKey === 'profile');
+
+      document.getElementById('pane-orders').style.display = tabKey === 'orders' ? 'block' : 'none';
+      document.getElementById('pane-addresses').style.display = tabKey === 'addresses' ? 'block' : 'none';
+      document.getElementById('pane-profile').style.display = tabKey === 'profile' ? 'block' : 'none';
+    }
+
+    function renderOrdersPage() {
+      const orders = CustomerStore.getOrders();
+      const container = document.getElementById('page-orders-list');
+      if (!container) return;
+
+      if (orders.length === 0) {
+        container.innerHTML = '<div class="card p-6 text-center text-muted">No orders found.</div>';
+        return;
+      }
+
+      container.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:var(--space-3);">
+          ${orders.map(ord => `
+            <div class="card p-4" style="border:1px solid var(--color-border);">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+                <div>
+                  <strong style="color:var(--color-primary);">${ord.id}</strong>
+                  <span class="text-xs text-muted" style="margin-left:6px;">${ord.date}</span>
+                </div>
+                <span class="badge ${ord.statusCode === 'delivered' ? 'badge-success' : 'badge-orange'}">
+                  ${ord.status}
+                </span>
+              </div>
+
+              <div style="font-size:var(--font-size-sm); color:var(--color-primary); font-weight:700; margin-bottom:4px;">
+                🏪 ${ord.shopName}
+              </div>
+
+              <div class="text-xs text-muted" style="margin-bottom:8px;">
+                ${ord.items.map(i => `${i.qty}x ${i.name}`).join(', ')}
+              </div>
+
+              <div style="display:flex; align-items:center; justify-content:space-between; border-top:1px dashed var(--color-border); padding-top:8px;">
+                <span style="font-weight:800; color:var(--color-primary);">$${ord.total.toFixed(2)} (${ord.fulfillmentType})</span>
+                <button class="btn btn-secondary btn-sm" onclick="CustomerUI.openOrderTracker('${ord.id}')">
+                  📍 Track Order Live
+                </button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderAddressesPage() {
+      const addresses = CustomerStore.getAddresses();
+      const container = document.getElementById('page-addresses-list');
+      if (!container) return;
+
+      container.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:var(--space-3);">
+          ${addresses.map(addr => `
+            <div class="card p-4" style="display:flex; align-items:flex-start; justify-content:space-between;">
+              <div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:1.2rem;">${addr.icon}</span>
+                  <strong style="color:var(--color-primary);">${addr.label}</strong>
+                  ${addr.isDefault ? '<span class="badge badge-success" style="font-size:10px;">Default</span>' : ''}
+                </div>
+                <p class="text-xs text-muted" style="margin-top:4px; margin-bottom:2px;">${addr.recipient} • ${addr.phone}</p>
+                <p class="text-xs text-muted" style="margin-bottom:0;">${addr.line1}, ${addr.city} - ${addr.pincode}</p>
+              </div>
+              <div style="display:flex; gap:6px;">
+                ${!addr.isDefault ? `<button class="btn btn-outline btn-sm" onclick="CustomerStore.setDefaultAddress('${addr.id}'); renderAddressesPage();">Set Default</button>` : ''}
+                <button class="btn btn-ghost btn-sm" onclick="CustomerStore.deleteAddress('${addr.id}'); renderAddressesPage();">🗑️</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function toggleAuthSimulation() {
+      const auth = CustomerStore.getAuth();
+      if (auth.isAuthenticated) {
+        CustomerStore.setAuth(false);
+        document.getElementById('auth-container-box').style.display = 'block';
+        document.getElementById('main-account-ui').style.display = 'none';
+        document.getElementById('auth-toggle-label').textContent = 'Sign In';
+      } else {
+        CustomerStore.setAuth(true);
+        showMainAccountUI();
+      }
+    }
+
+    function showMainAccountUI() {
+      document.getElementById('auth-container-box').style.display = 'none';
+      document.getElementById('main-account-ui').style.display = 'block';
+      document.getElementById('auth-toggle-label').textContent = 'Sign Out (Demo Mode)';
+      renderOrdersPage();
+      renderAddressesPage();
+    }
+
+    function showAuthTab(tab) {
+      document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+      document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+      document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
+      document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
+    }
+  </script>
+</body>
+</html>

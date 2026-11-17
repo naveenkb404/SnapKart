@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60" fill="none">
+  <!-- Camera lens & Cart Icon -->
+  <g transform="translate(6, 6)">
+    <!-- Cart Body with Navy Gradient -->
+    <rect x="2" y="2" width="44" height="44" rx="12" fill="#14213D"/>
+    <!-- Camera Lens / Snap Aperture ring in Orange -->
+    <circle cx="24" cy="22" r="11" stroke="#FF8C42" stroke-width="3.5" fill="none"/>
+    <circle cx="24" cy="22" r="5" fill="#FF8C42"/>
+    <!-- Cart bottom wheels -->
+    <circle cx="16" cy="38" r="3" fill="#FFFFFF"/>
+    <circle cx="32" cy="38" r="3" fill="#FFFFFF"/>
+    <!-- Snap Flash Accent -->
+    <path d="M34 10L37 13L34 16" stroke="#FF8C42" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  
+  <!-- SnapKart Wordmark -->
+  <text x="64" y="35" font-family="system-ui, -apple-system, 'Inter', 'Segoe UI', sans-serif" font-weight="800" font-size="26" fill="#14213D" letter-spacing="-0.5">
+    Snap<tspan fill="#FF8C42">Kart</tspan>
+  </text>
+  
+  <!-- Tagline -->
+  <text x="65" y="49" font-family="system-ui, -apple-system, 'Inter', 'Segoe UI', sans-serif" font-weight="600" font-size="9" fill="#64748B" letter-spacing="1.8">
+    SNAP IT • FIND IT • GET IT
+  </text>
+</svg>

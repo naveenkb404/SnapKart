@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapKart | Single-Shop Express Checkout</title>
+  
+  <link rel="icon" type="image/svg+xml" href="../../static/images/favicon.svg">
+  <link rel="stylesheet" href="../../static/css/variables.css">
+  <link rel="stylesheet" href="../../static/css/base.css">
+  <link rel="stylesheet" href="../../static/css/components.css">
+  <link rel="stylesheet" href="../../static/css/customer.css">
+</head>
+<body style="background:var(--color-bg);">
+
+  <header class="sk-navbar">
+    <div class="container sk-navbar-inner">
+      <a href="index.html" class="sk-brand" title="SnapKart Customer Marketplace">
+        <img src="../../static/images/logo.svg" alt="SnapKart Logo">
+      </a>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="index.html" class="btn btn-outline btn-sm">← Continue Shopping</a>
+        <a href="account.html" class="btn btn-ghost btn-sm">👤 Account</a>
+        <span class="badge badge-success">🔒 Secure Hyperlocal Checkout</span>
+        <a href="../../index.html" class="btn btn-ghost btn-sm" title="Exit to Role Selection" style="color:var(--color-text-muted);">
+          🚪 Exit
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="max-width: 880px; padding-top: var(--space-8); padding-bottom: var(--space-12);">
+    
+    <div style="margin-bottom: var(--space-6);">
+      <h2>Single-Shop Express Checkout</h2>
+      <p class="text-muted">Orders are fulfilled directly from one neighbourhood store for direct hyperlocal delivery.</p>
+    </div>
+
+    <div class="grid-2" style="align-items:start;">
+      
+      <!-- Left Column: Fulfillment & Address -->
+      <div>
+        <!-- Fulfillment Mode Selection -->
+        <div class="card p-5 mb-5">
+          <h4 style="font-size:var(--font-size-base); color:var(--color-primary); margin-bottom:var(--space-3);">1. Select Fulfillment Method</h4>
+          
+          <div class="fulfillment-pill-group mb-4">
+            <button class="fulfillment-pill active" id="btn-delivery-mode" onclick="setCheckoutMode('delivery')">
+              🛵 Doorstep Delivery ($2.49)
+            </button>
+            <button class="fulfillment-pill" id="btn-pickup-mode" onclick="setCheckoutMode('pickup')">
+              🏬 Store Pickup (FREE)
+            </button>
+          </div>
+
+          <div id="checkout-delivery-panel">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <label class="form-label mb-0">Delivery Address</label>
+              <button class="btn btn-ghost btn-sm" onclick="SnapKart.openModal('add-address-modal')">+ Add New Address</button>
+            </div>
+
+            <div id="saved-address-cards-box">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <div id="checkout-pickup-panel" style="display:none;">
+            <div class="card p-4" style="background:#F0FDF4; border:1px solid #BBF7D0;">
+              <span class="badge badge-success mb-2">Self Pickup at Merchant Counter</span>
+              <h5 style="color:#065F46; font-size:14px; margin-bottom:4px;">Indiranagar TechHub</h5>
+              <p class="text-xs text-muted" style="margin-bottom:6px;">#42, 100 Feet Road, HAL 2nd Stage, Indiranagar</p>
+              <p class="text-xs text-muted" style="margin-bottom:0;">Ready for collection within 10 minutes. Zero delivery fee applies.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delivery Notes & Landmark -->
+        <div class="card p-5 mb-5">
+          <h4 style="font-size:var(--font-size-base); color:var(--color-primary); margin-bottom:var(--space-3);">2. Delivery Instructions</h4>
+          <div class="form-group mb-0">
+            <input type="text" class="form-control" id="order-delivery-notes" placeholder="e.g. Leave with security, call when outside gate">
+          </div>
+        </div>
+
+        <!-- Simulated Payment Method -->
+        <div class="card p-5">
+          <h4 style="font-size:var(--font-size-base); color:var(--color-primary); margin-bottom:var(--space-3);">3. Payment Method</h4>
+          <div class="alert alert-info mb-3" style="font-size:12px;">
+            <span class="alert-icon">ℹ️</span>
+            <div class="alert-content">
+              <strong>Demonstration System:</strong> Payment gateways are simulated. Order will be confirmed as Pay on Delivery (Cash / UPI / Card).
+            </div>
+          </div>
+          <div style="padding:10px 14px; border:1.5px solid var(--color-secondary); border-radius:var(--radius-md); background:#FFF8F3; display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:1.2rem;">💵</span>
+              <strong style="font-size:13px; color:var(--color-primary);">Pay on Delivery (Cash / UPI QR on Arrival)</strong>
+            </div>
+            <span class="badge badge-orange">Pre-selected</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Order Summary & Placement -->
+      <div>
+        <div class="card p-5" style="position:sticky; top:88px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--space-3); border-bottom:1px solid var(--color-border); padding-bottom:var(--space-3);">
+            <div>
+              <h4 style="font-size:var(--font-size-base); color:var(--color-primary); margin-bottom:0;">Order Summary</h4>
+              <span class="text-xs text-muted">Merchant: <strong id="checkout-shop-name">Indiranagar TechHub</strong></span>
+            </div>
+            <span class="badge badge-success">Single-Shop Verified</span>
+          </div>
+
+          <!-- Items List -->
+          <div id="checkout-items-list" style="display:flex; flex-direction:column; gap:8px; margin-bottom:var(--space-4);">
+            <!-- Populated via JS -->
+          </div>
+
+          <!-- Totals -->
+          <div style="border-top:1px dashed var(--color-border); padding-top:var(--space-3); margin-top:var(--space-3);">
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:var(--font-size-sm);">
+              <span class="text-muted">Items Subtotal:</span>
+              <span class="font-bold" id="checkout-subtotal">$0.00</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:var(--font-size-sm);">
+              <span class="text-muted">Fulfillment Fee:</span>
+              <span class="font-bold text-success" id="checkout-delivery-fee">$0.00</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:var(--font-size-sm);">
+              <span class="text-muted">Local Taxes (5%):</span>
+              <span class="font-bold" id="checkout-tax">$0.00</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-top:1.5px solid var(--color-border); padding-top:8px; font-size:var(--font-size-xl); font-weight:800; color:var(--color-primary); margin-bottom:var(--space-4);">
+              <span>Grand Total:</span>
+              <span id="checkout-total">$0.00</span>
+            </div>
+
+            <button class="btn btn-secondary btn-lg" style="width:100%;" onclick="executeCheckout()">
+              ⚡ Place Hyperlocal Order →
+            </button>
+            <p class="text-xs text-muted" style="text-align:center; margin-top:8px; margin-bottom:0;">
+              Dispatched directly from local store by verified delivery partner.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Add Address Modal -->
+  <div class="modal-backdrop" id="add-address-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-size:1.15rem;">Add New Address</h3>
+        <button class="btn btn-ghost btn-sm" data-close-modal="add-address-modal">✕</button>
+      </div>
+      <form onsubmit="event.preventDefault(); CustomerStore.addAddress({ label: document.getElementById('new-addr-label').value, line1: document.getElementById('new-addr-line1').value, city: document.getElementById('new-addr-city').value, pincode: document.getElementById('new-addr-pincode').value }); SnapKart.closeModal('add-address-modal'); renderCheckoutAddresses();">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Address Type</label>
+            <select class="form-select" id="new-addr-label">
+              <option value="Home">Home 🏠</option>
+              <option value="Office">Office 💼</option>
+              <option value="Other">Other 📍</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">House / Flat / Street Details</label>
+            <input type="text" class="form-control" id="new-addr-line1" required placeholder="e.g. Apt 4B, Silver Oak, 12th Main">
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Area & City</label>
+              <input type="text" class="form-control" id="new-addr-city" required value="Indiranagar, Bangalore">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Postal Code</label>
+              <input type="text" class="form-control" id="new-addr-pincode" required value="560038">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline btn-sm" data-close-modal="add-address-modal">Cancel</button>
+          <button type="submit" class="btn btn-secondary btn-sm">Save Address</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="../../static/js/app.js"></script>
+  <script src="../../static/js/sample-data.js"></script>
+  <script src="../../static/js/customer-store.js"></script>
+  <script src="../../static/js/customer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCheckoutPage();
+    });
+
+    function renderCheckoutPage() {
+      const cart = CustomerStore.getCart();
+      const calc = CustomerStore.getCartCalculations();
+      
+      const shopNameEl = document.getElementById('checkout-shop-name');
+      if (shopNameEl) shopNameEl.textContent = cart.shopName || 'Indiranagar TechHub';
+
+      const itemsBox = document.getElementById('checkout-items-list');
+      if (itemsBox) {
+        if (cart.items.length === 0) {
+          itemsBox.innerHTML = '<p class="text-sm text-muted">Your cart is empty. <a href="index.html">Add products</a></p>';
+        } else {
+          itemsBox.innerHTML = cart.items.map(item => `
+            <div style="display:flex; justify-content:space-between; font-size:var(--font-size-sm);">
+              <span><strong>${item.qty}x</strong> ${item.name}</span>
+              <span class="font-bold">$${(item.price * item.qty).toFixed(2)}</span>
+            </div>
+          `).join('');
+        }
+      }
+
+      document.getElementById('checkout-subtotal').textContent = `$${calc.subtotal.toFixed(2)}`;
+      document.getElementById('checkout-delivery-fee').textContent = `$${calc.deliveryFee.toFixed(2)}`;
+      document.getElementById('checkout-tax').textContent = `$${calc.tax.toFixed(2)}`;
+      document.getElementById('checkout-total').textContent = `$${calc.total.toFixed(2)}`;
+
+      renderCheckoutAddresses();
+    }
+
+    function renderCheckoutAddresses() {
+      const addresses = CustomerStore.getAddresses();
+      const box = document.getElementById('saved-address-cards-box');
+      if (!box) return;
+
+      box.innerHTML = addresses.map(addr => `
+        <div class="address-select-card ${addr.isDefault ? 'selected' : ''}" onclick="selectAddressCard(this, '${addr.id}')">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div>
+              <span style="font-weight:700; color:var(--color-primary);">${addr.icon} ${addr.label}</span>
+              <p class="text-xs text-muted" style="margin-bottom:0;">${addr.line1}, ${addr.city} (${addr.pincode})</p>
+            </div>
+            <input type="radio" name="page_checkout_addr" value="${addr.id}" ${addr.isDefault ? 'checked' : ''}>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function selectAddressCard(element, addrId) {
+      document.querySelectorAll('#saved-address-cards-box .address-select-card').forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
+      const radio = element.querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+    }
+
+    function setCheckoutMode(mode) {
+      CustomerStore.setFulfillmentType(mode);
+      document.getElementById('btn-delivery-mode').classList.toggle('active', mode === 'delivery');
+      document.getElementById('btn-pickup-mode').classList.toggle('active', mode === 'pickup');
+      document.getElementById('checkout-delivery-panel').style.display = mode === 'delivery' ? 'block' : 'none';
+      document.getElementById('checkout-pickup-panel').style.display = mode === 'pickup' ? 'block' : 'none';
+      renderCheckoutPage();
+    }
+
+    function executeCheckout() {
+      const notes = document.getElementById('order-delivery-notes').value;
+      const newOrder = CustomerStore.placeOrder({ notes });
+      if (newOrder) {
+        setTimeout(() => {
+          window.location.href = `account.html?track=${newOrder.id}`;
+        }, 1200);
+      }
+    }
+  </script>
+</body>
+</html>

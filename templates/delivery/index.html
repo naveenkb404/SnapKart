@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapKart | Delivery Partner Mobile Console</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../static/images/favicon.svg">
+  
+  <!-- Design System CSS -->
+  <link rel="stylesheet" href="../../static/css/variables.css">
+  <link rel="stylesheet" href="../../static/css/base.css">
+  <link rel="stylesheet" href="../../static/css/components.css">
+  <link rel="stylesheet" href="../../static/css/delivery.css">
+</head>
+<body style="background-color: #F1F5F9;">
+
+  <!-- Delivery Partner Header -->
+  <header style="background:var(--color-surface); border-bottom:1px solid var(--color-border); padding:var(--space-3) 0; position:sticky; top:0; z-index:var(--z-sticky);">
+    <div class="container" style="max-width: 680px; display:flex; align-items:center; justify-content:space-between;">
+      <div style="display:flex; align-items:center; gap:var(--space-3);">
+        <img src="../../static/images/logo.svg" alt="SnapKart Logo" style="height:32px;">
+        <span class="badge badge-orange" style="font-size:10px;">FLEET PARTNER</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:var(--space-3);">
+        <div style="text-align:right;">
+          <div style="font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); color:var(--color-primary);">Vikram Singh</div>
+          <div style="font-size:11px; color:var(--color-text-muted);">ID: #RDR-402 • Indiranagar</div>
+        </div>
+        <div style="width:36px; height:36px; border-radius:50%; background:var(--color-primary); color:white; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:13px;">
+          VS
+        </div>
+        <a href="../../index.html" class="btn btn-outline btn-sm" title="Log Out and return to role selection">
+          Log Out
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile-Optimized Rider Console Main View -->
+  <main class="container" style="max-width: 680px; padding-top: var(--space-4); padding-bottom: var(--space-12);">
+    
+    <!-- Rider Duty & Vehicle Hero Card -->
+    <section class="rider-status-card mb-4">
+      <div class="rider-duty-toggle">
+        <div>
+          <span style="font-size:10px; color:#CBD5E1; text-transform:uppercase; letter-spacing:0.05em; display:block;">DUTY DISPATCH STATUS</span>
+          <span id="rider-shift-status-text" style="font-size:var(--font-size-lg); font-weight:var(--font-weight-extrabold); color:var(--color-success);">
+            ONLINE (Ready for Dispatch)
+          </span>
+          <div class="vehicle-spec-pill">
+            <span>🛵 Ather 450X EV</span> • 
+            <span style="font-family:var(--font-mono);">KA-03-HA-8821</span> • 
+            <span style="color:#34D399;">⚡ 78%</span>
+          </div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="rider-shift-toggle" checked>
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+
+      <div class="rider-stats-grid">
+        <div class="rider-stat-box">
+          <div class="rider-stat-number" id="rider-today-earnings">$48.30</div>
+          <div class="rider-stat-label">Today's Earnings</div>
+        </div>
+        <div class="rider-stat-box">
+          <div class="rider-stat-number" id="rider-today-trips">9</div>
+          <div class="rider-stat-label">Trips Completed</div>
+        </div>
+        <div class="rider-stat-box">
+          <div class="rider-stat-number">⭐ 4.96</div>
+          <div class="rider-stat-label">Rider Rating</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rider Navigation Tabs Bar -->
+    <div class="rider-nav-tabs">
+      <button class="rider-tab-btn active" data-rider-tab="dashboard">📊 Dashboard</button>
+      <button class="rider-tab-btn" data-rider-tab="requests">
+        📡 Requests (<span id="requests-count-badge">2</span>)
+      </button>
+      <button class="rider-tab-btn" data-rider-tab="mission">📦 Active Delivery</button>
+      <button class="rider-tab-btn" data-rider-tab="earnings">💰 Earnings</button>
+      <button class="rider-tab-btn" data-rider-tab="profile">👤 Profile</button>
+    </div>
+
+    <!-- Dynamic Content Container -->
+    <div id="rider-content-container"></div>
+
+  </main>
+
+  <!-- =========================================================================
+       1. Merchant Pickup OTP Modal
+       ========================================================================= -->
+  <div class="modal-backdrop" id="pickup-otp-modal">
+    <div class="modal-dialog" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-size:1.15rem;">Enter Store Pickup OTP</h3>
+        <button class="btn btn-ghost btn-sm" data-close-modal="pickup-otp-modal">✕</button>
+      </div>
+      <div class="modal-body text-center">
+        <div style="font-size:2.5rem; margin-bottom:8px;">🏪</div>
+        <p class="text-sm text-muted mb-2">Ask Indiranagar TechHub staff for the 4-digit pickup handover OTP.</p>
+        <span class="badge badge-orange mb-3">Expected Demo Code: 8492</span>
+        <div class="form-group">
+          <input type="text" class="form-control" id="pickup-otp-input" placeholder="Enter 4-digit OTP" style="font-family:var(--font-mono); font-size:1.5rem; text-align:center; letter-spacing:0.2em; font-weight:800;" maxlength="4">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" data-close-modal="pickup-otp-modal">Cancel</button>
+        <button class="btn btn-secondary btn-sm" onclick="DeliveryApp.verifyPickupOtp()">Verify & Confirm Handover</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       2. Customer Delivery OTP Modal
+       ========================================================================= -->
+  <div class="modal-backdrop" id="delivery-otp-modal">
+    <div class="modal-dialog" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="font-size:1.15rem;">Verify Customer Delivery OTP</h3>
+        <button class="btn btn-ghost btn-sm" data-close-modal="delivery-otp-modal">✕</button>
+      </div>
+      <div class="modal-body text-center">
+        <div style="font-size:2.5rem; margin-bottom:8px;">🤝</div>
+        <p class="text-sm text-muted mb-2">Ask customer Rajesh Kumar for their 4-digit delivery confirmation OTP.</p>
+        <span class="badge badge-success mb-3">Expected Demo Code: 6149</span>
+        <div class="form-group">
+          <input type="text" class="form-control" id="delivery-otp-input" placeholder="Enter 4-digit OTP" style="font-family:var(--font-mono); font-size:1.5rem; text-align:center; letter-spacing:0.2em; font-weight:800;" maxlength="4">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" data-close-modal="delivery-otp-modal">Cancel</button>
+        <button class="btn btn-secondary btn-sm" onclick="DeliveryApp.verifyDeliveryOtp()">Complete Delivery & Claim $5.80</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="../../static/js/app.js"></script>
+  <script src="../../static/js/delivery-data.js"></script>
+  <script src="../../static/js/delivery.js"></script>
+</body>
+</html>

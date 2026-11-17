@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapKart | Store Details & Local Catalog</title>
+  
+  <link rel="icon" type="image/svg+xml" href="../../static/images/favicon.svg">
+  <link rel="stylesheet" href="../../static/css/variables.css">
+  <link rel="stylesheet" href="../../static/css/base.css">
+  <link rel="stylesheet" href="../../static/css/components.css">
+  <link rel="stylesheet" href="../../static/css/customer.css">
+</head>
+<body style="background:var(--color-bg);">
+
+  <header class="sk-navbar">
+    <div class="container sk-navbar-inner">
+      <a href="index.html" class="sk-brand" title="SnapKart Customer Marketplace">
+        <img src="../../static/images/logo.svg" alt="SnapKart Logo">
+      </a>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="index.html" class="btn btn-outline btn-sm">← Back to Marketplace</a>
+        <a href="account.html" class="btn btn-ghost btn-sm">👤 Account</a>
+        <button class="btn btn-secondary btn-sm" onclick="SnapKart.openDrawer('cart-drawer')">
+          🛒 Cart <span id="cart-count-badge" class="badge badge-navy" style="margin-left:4px;">1</span>
+        </button>
+        <a href="../../index.html" class="btn btn-ghost btn-sm" title="Exit to Role Selection" style="color:var(--color-text-muted);">
+          🚪 Exit
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="max-width: 920px; padding-top: var(--space-8); padding-bottom: var(--space-12);">
+    
+    <!-- Store Showcase Header -->
+    <div class="card p-6 mb-6">
+      <div style="display:flex; gap:var(--space-5); align-items:flex-start; flex-wrap:wrap;">
+        <div class="store-avatar" style="width:72px; height:72px; font-size:1.85rem; border-radius:var(--radius-lg);">IT</div>
+        <div style="flex-grow:1; min-width:260px;">
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px;">
+            <h2 style="font-size:1.75rem; color:var(--color-primary); margin-bottom:0;">Indiranagar TechHub</h2>
+            <span class="badge badge-success">✓ Verified Partner</span>
+            <span class="badge badge-orange">⚡ 15-Min Delivery Zone</span>
+          </div>
+          <p class="text-sm text-muted" style="margin-bottom:8px;">#42, 100 Feet Road, HAL 2nd Stage, Indiranagar, Bangalore 560038</p>
+          <div class="store-meta" style="font-size:13px;">
+            <span>⭐ <strong>4.9</strong> (428 reviews)</span>
+            <span>•</span>
+            <span class="text-secondary font-bold">0.8 km from your hub</span>
+            <span>•</span>
+            <span>🕒 Open: 9:00 AM – 10:30 PM</span>
+            <span>•</span>
+            <span>📞 +91 80 4123 9988</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map & Directions Simulation Placeholder -->
+    <div class="card p-5 mb-6" style="background:#F8FAFC; border:1px solid var(--color-border);">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+        <div>
+          <h4 style="font-size:var(--font-size-base); color:var(--color-primary); margin-bottom:2px;">📍 Store Geospatial Navigation</h4>
+          <span class="text-xs text-muted">Distance from Indiranagar 100ft Rd: <strong>0.8 km</strong> • Est. Bike Route: <strong>4 mins</strong></span>
+        </div>
+        <button class="btn btn-outline-secondary btn-sm" onclick="SnapKart.showToast('Launching GPS Navigation to Indiranagar TechHub...', 'info')">
+          🧭 Launch Directions in Maps
+        </button>
+      </div>
+
+      <div class="map-simulation-card" style="height:180px; border-radius:var(--radius-md);">
+        <div class="map-hub-pin" style="top:42%; left:48%;">
+          🏪 Indiranagar TechHub (Open)
+        </div>
+        <div class="map-rider-pin" style="top:52%; left:40%;"></div>
+      </div>
+    </div>
+
+    <!-- Store Products Catalog -->
+    <section>
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--space-4);">
+        <div>
+          <h3>In-Stock Catalog at this Store</h3>
+          <p class="text-sm text-muted">Items guaranteed ready for instant pickup or 15-minute rider dispatch</p>
+        </div>
+        <span class="badge badge-neutral">Single-Shop Order Applicable</span>
+      </div>
+
+      <div class="grid-3" id="store-catalog-grid">
+        <!-- Product 1 -->
+        <div class="product-card">
+          <div class="product-image-wrap">
+            <div class="product-eta-badge">⚡ 18m delivery</div>
+            <img src="../../static/images/placeholder.svg" alt="Sony Headphones">
+          </div>
+          <div class="product-info">
+            <h4 class="product-title">Sony WH-1000XM5 Headphones</h4>
+            <div class="stock-freshness-pill mb-2">🕒 In Stock (12 units) • Updated 8m ago</div>
+            <div class="product-footer">
+              <span class="product-price">$348.00</span>
+              <button class="btn btn-secondary btn-sm" onclick="CustomerStore.addToCart(SnapData.products[0], 'shop-1', 348.00)">
+                + Add
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card">
+          <div class="product-image-wrap">
+            <div class="product-eta-badge">⚡ 18m delivery</div>
+            <img src="../../static/images/placeholder.svg" alt="Apex Smartwatch">
+          </div>
+          <div class="product-info">
+            <h4 class="product-title">Apex Ultra Gen-4 Smartwatch</h4>
+            <div class="stock-freshness-pill mb-2">🕒 In Stock (8 units) • Updated 11m ago</div>
+            <div class="product-footer">
+              <span class="product-price">$199.00</span>
+              <button class="btn btn-secondary btn-sm" onclick="CustomerStore.addToCart(SnapData.products[3], 'shop-1', 199.00)">
+                + Add
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card">
+          <div class="product-image-wrap">
+            <div class="product-eta-badge">⚡ 18m delivery</div>
+            <img src="../../static/images/placeholder.svg" alt="Fast Charger">
+          </div>
+          <div class="product-info">
+            <h4 class="product-title">65W GaN Compact Rapid Charger</h4>
+            <div class="stock-freshness-pill mb-2">🕒 In Stock (14 units) • Updated 19m ago</div>
+            <div class="product-footer">
+              <span class="product-price">$34.50</span>
+              <button class="btn btn-secondary btn-sm" onclick="CustomerStore.addToCart(SnapData.products[4], 'shop-1', 34.50)">
+                + Add
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Cart Slide-Over Drawer -->
+  <div class="drawer-backdrop" id="cart-drawer">
+    <div class="drawer">
+      <div class="drawer-header">
+        <h3 style="font-size:1.15rem; color:var(--color-primary);">Hyperlocal Cart</h3>
+        <button class="btn btn-ghost btn-sm" data-close-drawer="cart-drawer">✕</button>
+      </div>
+      <div class="drawer-body" id="drawer-cart-items"></div>
+      <div class="drawer-footer">
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:800; font-size:var(--font-size-lg); color:var(--color-primary);">
+          <span>Total:</span>
+          <span id="cart-total">$0.00</span>
+        </div>
+        <a href="checkout.html" class="btn btn-secondary" style="width:100%; text-align:center;">
+          Proceed to Checkout →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="../../static/js/app.js"></script>
+  <script src="../../static/js/sample-data.js"></script>
+  <script src="../../static/js/customer-store.js"></script>
+  <script src="../../static/js/customer.js"></script>
+</body>
+</html>

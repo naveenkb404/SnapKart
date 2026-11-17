@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    SnapKart - Hyperlocal Visual Search Marketplace
+    Base Django Template Layout
+    Tagline: Snap It. Find It. Get It.
+    Django Usage: {% load static %}
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}SnapKart | Snap It. Find It. Get It.{% endblock %}</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../static/images/favicon.svg">
+  
+  <!-- Design System Core CSS -->
+  <link rel="stylesheet" href="../static/css/variables.css">
+  <link rel="stylesheet" href="../static/css/base.css">
+  <link rel="stylesheet" href="../static/css/components.css">
+  
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <!-- Main Portal Content Block -->
+  {% block content %}{% endblock %}
+
+  <!-- Core JavaScript Architecture -->
+  <script src="../static/js/app.js"></script>
+  <script src="../static/js/sample-data.js"></script>
+  <script src="../static/js/visual-search.js"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
